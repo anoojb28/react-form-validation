@@ -3,18 +3,24 @@ import classes from "./Input.css";
 
 const Input = (props) => {
   let inputElement = null;
+  let validationText = "";
+  const inputClasses = [classes.InputElement];
+
+  if (props.inValid && props.shouldValidate && props.touched) {
+    inputClasses.push(classes.InValid);
+  }
 
   switch (props.elementType) {
     case "input":
-      console.log(classes.InputElement);
       inputElement = (
         <div>
           <input
-            className={classes.InputElement}
+            className={inputClasses.join(" ")}
             {...props.elementConfig}
             value={props.value}
             onChange={props.changed}
           />
+          <p className={classes.ValidationError}>{validationText}</p>
         </div>
       );
       break;
@@ -22,11 +28,12 @@ const Input = (props) => {
       inputElement = (
         <div>
           <textarea
-            className={classes.InputElement}
+            className={inputClasses.join(" ")}
             {...props}
             value={props.value}
             onChange={props.changed}
           />
+          <p className={classes.ValidationError}>{validationText}</p>
         </div>
       );
       break;
@@ -34,7 +41,7 @@ const Input = (props) => {
       inputElement = (
         <div>
           <select
-            className={classes.InputElement}
+            className={classes.Input}
             value={props.value}
             onChange={props.changed}
           >
@@ -44,13 +51,14 @@ const Input = (props) => {
               </option>
             ))}
           </select>
+          <p className={classes.ValidationError}>{validationText}</p>
         </div>
       );
       break;
     default:
       inputElement = (
         <input
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...props}
           value={props.value}
           onChange={props.changed}
